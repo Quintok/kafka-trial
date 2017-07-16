@@ -1,0 +1,8 @@
+spring:
+  kafka:
+    consumer:
+      group-id: groupId
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+    bootstrap-servers: kafka:9092

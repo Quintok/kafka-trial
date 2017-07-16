@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-demo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: kafka-demo
+    spec:
+      containers:
+        - name: kafka-demo
+          image: "localhost:5000/quintok/kafka-demo:13.0"
+          ports:
+          -  name: kafka-demo
+             containerPort: 8080
+             protocol: TCP
+          livenessProbe:
+              tcpSocket:
+                port: kafka-demo
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-demo
+  # labels:
+  #   k8s-app: kafka-demo
+  #   kubernetes.io/name: "kafka-demo"
+spec:
+  selector:
+    name: kafka-demo
+  ports:
+  - name: kafka-demo-web
+    port: 80
+    nodePort: 30001
+    targetPort: 8080
+    protocol: TCP
+  type: NodePort
